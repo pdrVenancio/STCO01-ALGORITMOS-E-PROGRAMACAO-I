@@ -1,6 +1,20 @@
-typedef struct NumeroComplexo NumComp;
+typedef struct complexo
+{
+  double real, imag;
+}complexo;
 
-NumComp* numeroCriar(float a, float b);
-float numeroAtribuir(NumComp* n, float a, float b);
-void numeroImp(NumComp* n);
-void Liberar(NumComp* n);
+complexo *complexoCriar(double real, double imag);
+
+complexo *complexoLe();
+
+complexo *complexoSub(complexo *n1, complexo *n2);
+complexo *complexoSoma(complexo *n1, complexo *n2);
+complexo *complexoMult(complexo *n1, complexo *n2);
+complexo *complexoDiv(complexo *n1, complexo *n2);
+
+void complexoPrint(complexo *n);
+void complexoLiberar(complexo *n);
+
+
+
+

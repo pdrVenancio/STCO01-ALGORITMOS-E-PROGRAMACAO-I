@@ -1,22 +1,33 @@
-#include<stdio.h>
-#include<stdlib.h>
-// importando a biblioteca
+#include <stdio.h>
 #include "complex.h"
 
 int main()
 {
-  NumComp *a, *b;
+  complexo *soma, *sub, *mult, *div, *n1, *n2;
 
-  a = numeroCriar(4, 7);
+  n1 = complexoLe();
+  n2 = complexoLe();
 
-  numeroImp(a);
-  numeroImp(b);
+  soma = complexoSoma(n1,n2);
+  sub = complexoSub(n1,n2);
+  div = complexoDiv(n1, n2);
+  mult = complexoMult(n1, n2);
   
-
-  Libera(a);
-  Libera(b);
-
-
+  printf("\nSoma: ");
+  complexoPrint(soma);
+  printf("\nSubtração: ");
+  complexoPrint(sub);
+  printf("\nDivisão: ");
+  complexoPrint(div);
+  printf("\nMultiplicação: ");
+  complexoPrint(mult);
   
-  return 0;
+  complexoLiberar(soma);
+  complexoLiberar(mult);
+  complexoLiberar(div);
+  complexoLiberar(sub);
+  complexoLiberar(n1);
+  complexoLiberar(n2);
+
+  return  0;
 }
