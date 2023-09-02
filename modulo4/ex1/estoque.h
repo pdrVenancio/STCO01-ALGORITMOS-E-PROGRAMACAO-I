@@ -1,16 +1,16 @@
-#define MAX 100
+#ifndef _LISTA_ESTATICA
+#define _LISTA_ESTATICA
 
-typedef struct estoque{
-  int cod[MAX], qnt;
-  char nome[30];
-  float preco[MAX];
-}estoque;
+typedef struct produto produto;
+typedef struct lista lista;
 
-estoque* criarLista();
-int liberarLista(estoque **li);
-int cheiaLista(estoque *li);
+lista *criarLista();
+int liberarLista(lista **li);
+int inserirItem(lista *li);
+int listaCheia(lista *li);
+void imprimirProduto(lista *li , int i);
+produto *buscarMenorPreco(lista *li);
+int removerUltimosElementos(lista *li, int n);
+int trocarElementos(lista *li, int pos1, int pos2);
 
-//estoque* novoProduto();
-//estoque* alocarProduto(int cod, char nome[30], float preco, int qnt);
-
-
+#endif
