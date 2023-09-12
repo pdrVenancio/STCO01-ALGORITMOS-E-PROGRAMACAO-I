@@ -39,7 +39,8 @@ void inserir_no_final(No **lista, int num)
         if(*lista == NULL)
         {
             *lista = novo;
-        }else
+        }
+        else
         {
             auxiliar = *lista;
 
@@ -48,8 +49,7 @@ void inserir_no_final(No **lista, int num)
 
             auxiliar->proximo = novo;
         }
-        
-        *lista = novo;
+    
     }else
         printf("Erro na alocacao de memoria...\n\n");
 }
@@ -81,7 +81,57 @@ void inserir_no_meio(No **lista, int num, int anterior)
     else
         printf("Erro na alocacao de memoria...\n\n");   
 }
+//AULA 246 - Imprimir
+void impprimir_lista(No *no)
+{
+    printf("\nLISTA: ");
+
+    while(no)
+    {
+        printf("%d ",no->valor);
+        no = no->proximo;
+    }
+}
+
 int main(){
+
+    int op, valor, anterior;
+    No *lista = NULL;
+    do{
+        printf("\n\tOpcao: \n\t0 - sair \n\t1 - Insrir no inicio\n\t2 - Inserir no final\n\t3 - Inserir no Meio\n\t4 - Imprimir\n");
+        scanf("%d", & op);
+
+        switch (op)
+        {
+        case 1:
+            printf("digite o valor: ");
+            scanf("%d", &valor);
+            inserir_no_inicio(&lista, valor);
+
+            break;
+        case 2:
+            printf("digite o valor: ");
+            scanf("%d", &valor);
+            inserir_no_final(&lista, valor);
+
+            break;
+        case 3:
+            printf("digite o valor e o valor de referencia: ");
+            scanf("%d %d", &valor, &anterior);
+            inserir_no_meio(&lista, valor, anterior);
+
+            break;
+        case 4:
+            impprimir_lista(lista);
+            break;
+        default:
+            if(op != 0)
+                printf("\n\tOpcao invalida...\n");
+            break;
+        }
+
+    }while(op != 0);
+
 
     return 0;
 }
