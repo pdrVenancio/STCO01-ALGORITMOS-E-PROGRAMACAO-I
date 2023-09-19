@@ -190,17 +190,30 @@ No* buscar(Lista *lista, int num){
 
     return no;
 }
+//Aula 254 - Copiar lista
+void copiar_lista(Lista *l1, Lista *l2){
 
+    No *aux = l1->inicio;
+
+    while (aux)
+    {
+        inserir_no_final(l2, aux->valor);
+        aux = aux->proximo;
+    }
+    
+}
 int main(){
 
     int op, valor, anterior;
-   // No *lista = NULL;
-    Lista lista;
+   
+    Lista l1 ,l2 ,l3;
     No* removido = NULL;
-    criar_lista(&lista);
+    criar_lista(&l1);
+    criar_lista(&l2);
+    criar_lista(&l3);
 
     do{
-        printf("\n\tOpcao: \n\t0 - sair \n\t1 - Insrir no inicio\n\t2 - Inserir no final\n\t3 - Inserir no Meio\n\t4 - Inserir ordenado\n\t5 - imprimir\n\t6 - remover\n\t7 - Buscar\n");
+        printf("\n\tOpcao: \n\t0 - sair \n\t1 - Insrir no inicio\n\t2 - Inserir no final\n\t3 - Inserir no Meio\n\t4 - Inserir ordenado\n\t5 - imprimir\n\t6 - remover\n\t7 - Buscar\n\t8 - copiar lista\n\n");
         scanf("%d", & op);
 
         switch (op)
@@ -208,33 +221,43 @@ int main(){
         case 1:
             printf("digite o valor: ");
             scanf("%d", &valor);
-            inserir_no_inicio(&lista, valor);
+            inserir_no_inicio(&l1, valor);
+            
+            printf("digite o valor L2: ");
+            scanf("%d", &valor);
+            inserir_no_inicio(&l2, valor);
 
             break;
         case 2:
-            printf("digite o valor: ");
+            printf("digite o valor L2: ");
             scanf("%d", &valor);
-            inserir_no_final(&lista, valor);
+            inserir_no_final(&l2, valor);
 
             break;
         case 3:
             printf("digite o valor e o valor de referencia: ");
             scanf("%d %d", &valor, &anterior);
-            inserir_no_meio(&lista, valor, anterior);
+            inserir_no_meio(&l1, valor, anterior);
 
             break;
         case 4:
             printf("digite o valor: ");
             scanf("%d", &valor);
-            inserir_ordenado(&lista, valor);
+            inserir_ordenado(&l1, valor);
             break;
         case 5:
-            imprimir_lista(lista);
+       
+            printf("\nlista1:");
+            imprimir_lista(l1);
+            printf("\nlista2:");
+            imprimir_lista(l2);
+            printf("\nlista3:");
+            imprimir_lista(l3);
             break;
         case 6:
             printf("digite o valor: ");
             scanf("%d", &valor);
-            removido = remover(&lista, valor);
+            removido = remover(&l3, valor);
             if (removido)
             {
                 printf("Elemento removido...\n\n");
@@ -246,7 +269,7 @@ int main(){
             case 7:
                 printf("digite o valor: ");
                 scanf("%d", &valor);
-                removido = buscar(&lista, valor);
+                removido = buscar(&l3, valor);
                 if (removido)
                 {
                     printf("Busca feita com sucesso: %d...", removido->valor);
@@ -254,6 +277,11 @@ int main(){
                 }else
                     printf("VAlor nao encontrado");
 
+                break;
+            case 8:
+                copiar_lista(&l1, &l3);
+                copiar_lista(&l2, &l3);
+                
                 break;
         default:
             if(op != 0)

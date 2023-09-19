@@ -1,4 +1,4 @@
-// AULA 243 - Inserir no inicio da lista
+// AULA 257 - Lista duplamente encadeada
 
 #include<stdlib.h>
 #include<stdio.h>
@@ -7,6 +7,7 @@ typedef struct no
 {
     int valor;
     struct no *proximo;
+    struct no *anterior;
 }No;
 
 //aula - 247
@@ -32,6 +33,11 @@ void inserir_no_inicio(Lista *lista, int num)
     {
         novo->valor = num;
         novo->proximo = lista->inicio;
+        novo->anterior = NULL;
+       
+        if(lista->inicio)// Faz o antigo primeiro elemento apontar para o novo primeiro elemento
+            lista->inicio->anterior = novo;
+
         lista->inicio = novo;
         lista->tam++;
     }
@@ -54,6 +60,7 @@ void inserir_no_final(Lista *lista, int num)
         if(lista->inicio == NULL)
         {
             lista->inicio = novo;
+            novo->anterior = NULL;
         }
         else
         {
@@ -63,6 +70,7 @@ void inserir_no_final(Lista *lista, int num)
                 auxiliar = auxiliar->proximo;
 
             auxiliar->proximo = novo;
+            novo->anterior = auxiliar;
         }
         
         lista->tam++;
@@ -72,7 +80,7 @@ void inserir_no_final(Lista *lista, int num)
 }
 
 // aula 245 - rocedimento para inserir no meio
-void inserir_no_meio(Lista *lista, int num, int anterior)
+void inserir_no_meio(Lista *lista, int num, int ant)
 {
     No *auxiliar, *novo = malloc(sizeof(No));
     if(novo)
@@ -83,18 +91,19 @@ void inserir_no_meio(Lista *lista, int num, int anterior)
         if(lista->inicio == NULL)
         {
             novo->proximo = NULL;
+            novo->anterior = NULL;
             lista->inicio = novo;
         }
         else{
-             auxiliar = lista->inicio;
-
-            while (auxiliar->valor != anterior && auxiliar->proximo)// caso o valor informado ano esxistir o novo sera inserido no final da lista
+            auxiliar = lista->inicio;
+            while(auxiliar->valor != ant && auxiliar->proximo)
                 auxiliar = auxiliar->proximo;
-            
             novo->proximo = auxiliar->proximo;
+            if(auxiliar->proximo)
+                auxiliar->proximo->anterior = novo;
+            novo->anterior = auxiliar;
             auxiliar->proximo = novo;
-        }  
-
+        } 
        lista->tam++;
     }
     else
@@ -102,7 +111,7 @@ void inserir_no_meio(Lista *lista, int num, int anterior)
 }
 //AULA 248 - inserir ordenado
 void inserir_ordenado(Lista *lista, int num){
-    No *aux, *novo = malloc(sizeof(No));
+    No *auxiliar, *novo = malloc(sizeof(No));
 
     if(novo)
     {
@@ -111,22 +120,25 @@ void inserir_ordenado(Lista *lista, int num){
         if(lista->inicio == NULL)
         {
             novo->proximo = NULL;
+            novo->anterior = NULL;
             lista->inicio = novo;
-
         }
         else if (novo->valor < lista->inicio->valor)
         {
             novo->proximo = lista->inicio;
+            lista->inicio->anterior = novo;
             lista->inicio = novo;
         }else
         {
-            aux = lista->inicio;
-            while (aux->proximo && novo->valor > aux->proximo->valor)
+            auxiliar = lista->inicio;
+            while (auxiliar->proximo && novo->valor > auxiliar->proximo->valor)
             {
-                aux = aux->proximo;
+                auxiliar = auxiliar->proximo;
             }
-            novo->proximo = aux->proximo;
-            aux->proximo = novo;
+            novo->proximo = auxiliar->proximo;
+            auxiliar->proximo->anterior = novo;
+            novo->anterior = auxiliar;
+            auxiliar->proximo = novo;
         }
         lista->tam++;
         
@@ -150,7 +162,7 @@ void imprimir_lista(Lista lista)
     }
 }
 No* remover(Lista *lista, int num){
-    No *aux, *remove = NULL;
+    No *auxiliar, *remove = NULL;
 
     if(lista->inicio)
     {
@@ -158,17 +170,23 @@ No* remover(Lista *lista, int num){
         {
             remove = lista->inicio;
             lista->inicio = remove->proximo;
+            if(lista->inicio)
+                lista->inicio->anterior = NULL;
             lista->tam--;
         }
         else{
-            aux = lista->inicio;
-            while (aux->proximo && aux->proximo->valor != num)
-                aux = aux->proximo;
+            auxiliar = lista->inicio;
+            while (auxiliar->proximo && auxiliar->proximo->valor != num)
+                auxiliar = auxiliar->proximo;
           
-            if(aux->proximo)
+            if(auxiliar->proximo)
             {
-                remove = aux->proximo;
-                aux->proximo = remove->proximo;
+                remove = auxiliar->proximo;
+                auxiliar->proximo = remove->proximo;
+                
+                if(auxiliar->proximo)
+                    auxiliar->proximo->anterior = auxiliar;
+                    
                 lista->tam--;
             }
         }
@@ -177,14 +195,14 @@ No* remover(Lista *lista, int num){
 }
 // Aula 253 -  Buscar
 No* buscar(Lista *lista, int num){
-    No *aux, *no = NULL;
+    No *auxiliar, *no = NULL;
 
-    aux = lista->inicio;
+    auxiliar = lista->inicio;
 
-    while(aux && aux->valor != num)
-        aux = aux->proximo;
-    if(aux)
-        no = aux;
+    while(auxiliar && auxiliar->valor != num)
+        auxiliar = auxiliar->proximo;
+    if(auxiliar)
+        no = auxiliar;
     
    
 
