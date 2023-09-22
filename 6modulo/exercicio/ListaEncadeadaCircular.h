@@ -30,9 +30,12 @@ int buscar_lista_posicao(Lista *li, int pos, int *dado);
 int buscar_lista_dado(Lista *li, int dado, int *pos);
 
 int imprimir_lista(Lista *li);
-int valores_repetidos(Lista *l1, Lista *l2);
 
 // exercicio
 int concatenar_lista(Lista *l1, Lista *l2);
+int valores_repetidos(Lista *l1, Lista *l2);
+int inverter_lista(Lista *l1, Lista *l2);
+int calcula_tamanho(Lista *l1);
+int ordenacao_lista(Lista *l1);
 
 #endif

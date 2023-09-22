@@ -573,24 +573,83 @@ int valores_repetidos(Lista *l1, Lista *l2){
   do{
     i = 0;  
     
-    if(aux2 == NULL)
+    if(*l2 == NULL)
       inserir_lista_final(l2, aux1->dado);
     else{
       //compara aux1 com todos os elemento de aux2
       aux2 = *l2;
-            do {
-                if(aux1->dado == aux2->dado) {
-                    i = 1;
-                    break;
-                }
-                aux2 = aux2->prox;
-            }while (aux2->prox != *l2);
+  
+      do {     
+          if(aux1->dado == aux2->dado) {
+              i = 1;
+              break;
+          }
+          aux2 = aux2->prox;
+      }while (aux2 != *l2); 
+      
       if(i == 0)
         inserir_lista_final(l2, aux1->dado);
-    } 
+  } 
   
     aux1 = aux1->prox;
   }while(aux1 != *l1);
 
   return 0;
+}
+//inverte l1 e add a lista l2
+int inverter_lista(Lista *l1, Lista *l2){
+    if (l1 == NULL)
+        return 1;
+
+  Elemento *aux1 = *l1;
+  
+  do{
+    inserir_lista_inicio(l2, aux1->dado);
+    
+    aux1 = aux1->prox;
+  }while(aux1 != (*l1));
+  return 0;
+}
+int calcula_tamanho(Lista *l1){
+  if (l1 == NULL)
+    return -1;
+  
+  Elemento *aux1 = *l1;
+  int cont = 0;
+  
+  do{
+    cont++;
+    aux1 = aux1->prox;
+  }while(aux1 != (*l1));
+
+  return cont;
+}
+// ordena lista 
+//0 - nao ordenada
+//1 - crescente
+//2 - decrescente
+int ordenacao_lista(Lista *l1){
+  if (l1 == NULL)
+        return 3;
+  
+  int c = 0, d = 0;
+  int tam = tamanho_lista(l1);
+  int i = 0;
+  Elemento *aux1 = *l1;
+  
+  do{
+    if(aux1->dado <= aux1->prox->dado)
+      c++;
+    else if(aux1->dado >= aux1->prox->dado)
+      d++;
+    i++; 
+    aux1 = aux1->prox;
+  }while(i <= tam);
+
+  if(c == tam)
+    return 1;
+  else if (d == tam)
+    return 2;
+  else 
+    return 0;
 }

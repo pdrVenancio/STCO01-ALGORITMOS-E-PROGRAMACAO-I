@@ -24,19 +24,19 @@ int main(void) {
   l2 = criar_lista();
 
 
-  inserir_lista_inicio(l1, 12);
   inserir_lista_inicio(l1, 1);
-  inserir_lista_inicio(l1, 23);
-  inserir_lista_inicio(l1, 2);
-  inserir_lista_inicio(l1, 2);
-  inserir_lista_inicio(l1, 1);
+  inserir_lista_inicio(l1, 10);
+  inserir_lista_inicio(l1, 21);
+  inserir_lista_inicio(l1, 22);
+  inserir_lista_inicio(l1, 29);
+  inserir_lista_inicio(l1, 50);
   
 
-  //inserir_lista_inicio(l2, 10);
-  //inserir_lista_inicio(l2, 1);
-  //inserir_lista_inicio(l2, 0);
-  //inserir_lista_inicio(l2, 100);
-  //inserir_lista_inicio(l2, 32);
+  inserir_lista_inicio(l2, 10);
+  inserir_lista_inicio(l2, 1);
+  inserir_lista_inicio(l2, 0);
+  inserir_lista_inicio(l2, 100);
+  inserir_lista_inicio(l2, 32);
   
   
   
@@ -58,7 +58,10 @@ int main(void) {
     printf("\n11 - Imprimir lista");    
     printf("\n12 - Sair");
     printf("\n13 - Concatenar lista");
-    printf("\n14 - Copiar valores repetidos de L1 para L2");
+    printf("\n14 - Eliminar numeros repetidos");
+    printf("\n15 - Inverte lista");
+    printf("\n16 - Verifica tamanho da lista");
+    printf("\n17 - Verifica ordenacao");
     printf("\nOpção: ");
     scanf("%d", &opcao);
 
@@ -225,6 +228,7 @@ int main(void) {
 
         // libera memória e finaliza programa
         liberar_lista(l1);
+        liberar_lista(l2);
         printf("\nFinalizando...");
         break;
 
@@ -244,7 +248,36 @@ int main(void) {
         else if (ok == 0)
           printf("\n\tElementos transferidos com sucesso!\n");
         break;
-
+      case 15:
+        
+        ok = inverter_lista(l1, l2);
+        if(ok == 1)
+          printf("Listas vazias");
+        else if (ok == 0)
+          printf("\n\tLista invertida\n");
+        break;
+      case 16:
+        
+        ok = calcula_tamanho(l1);
+        if(ok == -1)
+          printf("\n\tTamanho: 0");
+        else
+          printf("\n\tTamanho: %d", ok);
+          
+        break;
+       case 17:
+        
+        ok = ordenacao_lista(l1);
+        if(ok == 1)
+          printf("\n\tCrescente\n");
+        else if(ok == 0)
+          printf("\n\tNao ordenada");
+        else if (ok == 2)
+          printf("\n\tDecrescente\n");
+        else
+          printf("Lista vazia");
+          
+        break;
       default: 
         printf("\nOpção inválida!");
         break;
@@ -252,12 +285,6 @@ int main(void) {
     
 
   }while(opcao != 12);
-
-
-//*********************************************************
-  liberar_lista(l1);
-  liberar_lista(l2);
-
 
   return 0;
 }
