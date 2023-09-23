@@ -553,7 +553,9 @@ int concatenar_lista(Lista *l1, Lista *l2) {
 
         aux1->prox = *l2;
         aux2->prox = *l1;
+        free(l2);
         *l2 = NULL; 
+        
         return 0;
     }
     
@@ -602,6 +604,7 @@ int inverter_lista(Lista *l1, Lista *l2){
         return 1;
 
   Elemento *aux1 = *l1;
+  l2 = criar_lista();
   
   do{
     inserir_lista_inicio(l2, aux1->dado);
