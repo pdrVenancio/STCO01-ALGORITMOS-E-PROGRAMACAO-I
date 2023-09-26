@@ -239,7 +239,7 @@ int main(void) {
         if(ok == 1)
           printf("listaNULL");
         else if (ok == 0)
-          printf("\n\tLista concatenada com sucesso!\n");
+          printf("\n\tLista concatenada com sucesso!\n\tLEMBRE DE RECRIAR A LISTA L2 PARA FUTURAS OPERACOES\n");
         break;
       
       case 14:

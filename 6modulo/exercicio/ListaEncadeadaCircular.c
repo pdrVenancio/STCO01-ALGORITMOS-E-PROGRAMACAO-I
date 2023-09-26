@@ -604,7 +604,6 @@ int inverter_lista(Lista *l1, Lista *l2){
         return 1;
 
   Elemento *aux1 = *l1;
-  l2 = criar_lista();
   
   do{
     inserir_lista_inicio(l2, aux1->dado);
