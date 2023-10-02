@@ -88,8 +88,7 @@ int remover_meio(Lista *li, int num){
         i++;
     
     // se i ==  li->qnt significa que nao tem o elemento na lista
-    
-    
+
     for ( k = i; k <= li->qnt - 1; k++)
         li->num[k] = li->num[k + 1];
 
