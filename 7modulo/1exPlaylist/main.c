@@ -2,12 +2,10 @@
 # Lista Duplamente Encadeada
 
 ### Autores:
-2018003703 - Henrique Oliveira
-2019017937 - Fernando Goulart
-2019010918 - Pablo Benteu
-2019017900 - João Vitor Pivato
+2023010066 - PEDRO VENÂNCIO DOS SANTOS
+2023003929 - BRENO VIEIRA NOGUEIRA CARNEIRO
+2023005075 - MATHEUS LAZARO DE LIMA
 
-https://repl.it/@HenriqueCastro1/Lista-Duplamente-Encadeada
 ***************************************************************/
 
 #include "modulo.h"
@@ -16,52 +14,54 @@ https://repl.it/@HenriqueCastro1/Lista-Duplamente-Encadeada
 
 int main() {
   Lista *li = NULL;
-  int opcao, res, op;
+  Lista *l2 = NULL;
+  int opcao, res, res2, op;
 
   do {
-    printf("\n\n ♫  ♪  ♫  ♪   MENU DE MUSICAS  ♫ ♪  ♩ ♫ ♪   ♫ ♪ ♪ ♩");
-    printf("\n 0 - Sair\t\t\t\t\t 1 - Criar lista");
-    printf("\n 2 - Liberar lista\t\t\t 3 - Inserir final");
-    printf("\n 4 - Remover especifico\t\t 5 - Imprimir lista");
-    printf("\n 6 - player de musicas");
+    printf("\n\n ♫  ♪  ♫  ♪   MENU DE MUSICAS   ♫  ♪  ♩  ♫\n");
+    printf("\n\t\t\t0 - Sair\n\t\t\t1 - Criar lista");
+    printf("\n\t\t\t2 - Liberar lista\n\t\t\t3 - Inserir música");
+    printf("\n\t\t\t4 - Remover especifico\n\t\t\t5 - Imprimir lista");
+    printf("\n\t\t\t6 - Player de músicas\n");
     printf("\nOpção: ");
+    // Volume: ▁▂▃▄▅▆▇ 100%
+    // Fazer uma lista para aumentar e diminuir o som
+
     scanf("%d", &opcao);
 
     switch (opcao) {
 
     case 0:
       liberarLista(li);
+      liberarLista(l2);
       printf("\nFinalizando...\n\n");
       return 0;
       break;
     case 1:
       li = alocarLista();
+      l2 = alocarLista();
 
-      if (li != NULL)
+      if (li != NULL && l2 != NULL) {
         printf("\nLista criada com sucesso!");
+        Volume(l2);
+      }
       else
         printf("\nLista nao criada!");
 
       break;
     case 2:
       res = liberarLista(li);
+      res2 = liberarLista(l2);
       li = NULL;
+      l2 = NULL;
 
-      if (res)
+      if (res && res2)
         printf("\nLista liberada com sucesso!");
       else
         printf("\nLista nao liberada!");
 
       break;
-    // case 3:
-    //   res = inserirInicioLista(li);
 
-    //   if (res == 1)
-    //     printf("\nInsercao realizada com sucesso!");
-    //   else
-    //     printf("\nFalha na insercao!");
-
-    //   break;
     case 3:
       res = inserirFinalLista(li);
 
@@ -71,33 +71,6 @@ int main() {
         printf("\nFalha na insercao!");
 
       break;
-    // case 5:
-    //   res = inserirOrdemLista(li);
-
-    //   if (res == 1)
-    //     printf("\nInsercao realizada com sucesso!");
-    //   else
-    //     printf("\n Falha na insercao!");
-
-    //   break;
-    // case 6:
-    //   res = removerInicioLista(li);
-
-    //   if (res == 1)
-    //     printf("\nRemocao realizada com sucesso!");
-    //   else
-    //     printf("\nFalha na remocao!");
-
-    //   break;
-    // case 7:
-    //   res = removerFinalLista(li);
-
-    //   if (res == 1)
-    //     printf("\nRemocao realizada com sucesso!");
-    //   else
-    //     printf("\nFalha na remocao!");
-
-    //   break;
     case 4:
       res = removerEspecifico(li);
 
@@ -107,35 +80,20 @@ int main() {
         printf("\nFalha na remocao, elemento nao encontrado!");
 
       break;
-    // case 9:
-    //   res = buscaCelulaPosicao(li);
 
-    //   if (res == 0)
-    //     printf("\nPosicao nao existe!");
-
-    //   break;
-    // case 10:
-    //   res = buscaCelulaDado(li);
-
-    //   if (res == 0)
-    //     printf("\nElemento nao encontrado!");
-
-    //   break;
     case 5:
       imprimirLista(li);
       break;
     case 6:
-      player(li);
-       
-      
+      system("clear");
+      player(li, l2);
+
       break;
     default:
       printf("\nOpcao invalida!");
       break;
-
-      
     }
-    
+
   } while (1 == 1);
 
   return 0;

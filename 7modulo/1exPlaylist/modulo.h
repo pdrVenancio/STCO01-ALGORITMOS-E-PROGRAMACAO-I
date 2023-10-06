@@ -27,6 +27,7 @@ int removerEspecifico(Lista *li);
 //  imprimir lista
 int imprimirLista(Lista *li);
 
-void player(Lista *li);
+void player(Lista *li, Lista *l2);
+void Volume(Lista *l2);
 
 #endif
