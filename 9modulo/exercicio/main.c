@@ -22,7 +22,7 @@ int main(void) {
 
   int opcao, ok, pos, op;
   int dado;
-  int n, ficha;
+  int n;
 
   printf("Digite o numero maximos de fichas do dia: ");
   scanf("%d", &n);
@@ -33,12 +33,12 @@ int main(void) {
     printf("\n1  - Liberar fila");
     printf("\n2  - Adicionar elementos as filas criadas");
     printf("\n3  - Retirar Ficha main");
-    printf("\n4  - Consultar inicio da fila Caixa");
+    printf("\n4  - Consulta listas");
     printf("\n5  - Consultar inicio da fila Negocial");
     printf("\n6  - Criar filas");
     printf("\n7  - Retirar ficha Caixa");
     printf("\n8  - Retirar ficha Negocial");
-    printf("\n9 - Chama pessoa");
+    printf("\n9  - Ver fila main");
     printf("\n0  - Sair");
     printf("\nOpção: ");
     scanf("%d", &opcao);
@@ -86,37 +86,25 @@ int main(void) {
 
       //RETIRAR FICHA DA MAIN
     case 3:
-      ok = desenfileirar_main(fi_main);
-
       
-
-      if (ok == 1) {
-        printf("\n Remoção realizada com sucesso!");
-      } else {
-        printf("\n Falha na remoção!");
-      }
+      desenfileirar_main(fi_main);
+      
       break;
 
     //Primeiro elemento fila Caixa
     case 4:
-      printf("\n1 - Preferencial\t2 - Convencional\n");
-
-      scanf(" %d", &op);
-      if (op == 1)
-        ok = consultar_inicio_fila(fi_caixa_pref, &dado);
-      else if (op == 2)
-        ok = consultar_inicio_fila(fi_caixa_conv, &dado);
-      else
-        printf("Opcao invalida!");
+      //TA BUGANDO O RETIRAR FICHA
       
-
-      if (ok) {
-        printf("\n Busca realizada com sucesso!");
-        printf("\n Elemento no início da fila: ");
-        printf("%d", dado);
-      } else {
-        printf("\n Fila vazia!");
-      }
+      printf("\nMain: ");
+      printa_main(fi_main);
+      printf("\nCaixa con: ");
+      printa_main(fi_caixa_conv);
+      printf("\nCaixa pre: ");
+      printa_main(fi_caixa_pref);
+      printf("\nNegocial con: ");
+      printa_main(fi_negocial_conv);
+      printf("\nNegocial pref: ");
+      printa_main(fi_negocial_pref);
 
       break;
       
@@ -166,18 +154,23 @@ int main(void) {
       scanf(" %d", &op);
       if (op == 1)
       {
-        ficha = desenfileirar(fi_caixa_pref);
-        printf("\n\t Seu numero e: XP%d", ficha);
-        char code[2] = "XP";
-        enfileirar_main(fi_caixa_pref, ficha , code);    
+        int fichaXP = desenfileirar(fi_caixa_pref);
+        printf("\n\t Seu numero e: XP%d", fichaXP);
+        char fila = 'X';
+        char tipo = 'P';
+        ok =  enfileirar_main(fi_main, fichaXP , fila, tipo); 
+        if(ok)
+          printf("\nFicha adicionada a fila principal!\n\n");
       }
-
       else if (op == 2)
       {
-        desenfileirar(fi_caixa_conv);
-        printf("\n\t Seu numero e: XC%d", ficha);
-        char code[2] = "XC";
-        enfileirar_main(fi_caixa_conv, ficha , code);
+        int fichaXC = desenfileirar(fi_caixa_conv);
+        printf("\n\t Seu numero e: XC%d", fichaXC);
+        char fila = 'X';
+        char tipo = 'C';
+        ok = enfileirar_main(fi_main, fichaXC , fila, tipo);
+        if(ok)
+          printf("\nFicha adicionada a fila principal!\n\n");
       }
 
       else
@@ -192,24 +185,33 @@ int main(void) {
       scanf(" %d", &op);
       if (op == 1)
       {
-        ficha = desenfileirar(fi_negocial_pref);
-        printf("\n\t Seu numero e: NP%d", ficha);
-        char code[2] = "NP";
-        enfileirar_main(fi_negocial_pref, ficha , code);
+        int fichaNP = desenfileirar(fi_negocial_pref);
+        printf("\n\t Seu numero e: NP%d", fichaNP);
+        char fila = 'N';
+        char tipo = 'P';
+        ok = enfileirar_main(fi_main, fichaNP , fila, tipo);
+        if(ok)
+          printf("\nFicha adicionada a fila principal!\n\n");
       }
 
       else if (op == 2)
       {
-        desenfileirar(fi_negocial_conv);
-        printf("\n\t Seu numero e: NC%d", ficha);
-        char code[2] = "NC";
-        enfileirar_main(fi_negocial_conv, ficha , code);
+        int fichaNC = desenfileirar(fi_negocial_conv);
+        printf("\n\t Seu numero e: NC%d", fichaNC);
+        char fila = 'N';
+        char tipo = 'C';
+        ok = enfileirar_main(fi_main, fichaNC , fila, tipo);
+        if(ok)
+          printf("\nFicha adicionada a fila principal!\n\n");
       }
 
       else
         printf("Opcao invalida!");
 
 
+      break;
+    case 9:
+      printa_main(fi_main);
       break;
     case 0:
 

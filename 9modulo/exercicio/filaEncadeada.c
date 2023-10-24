@@ -10,7 +10,8 @@
 
 // criando elemento
 struct elemento {
-  char cod[2];
+  char fila;
+  char tipo;
   int dado;
   struct elemento *prox;
 };
@@ -98,7 +99,7 @@ int enfileirar(Fila *fi, int dado) {
 
   return 1;
 }
-int enfileirar_main(Fila *fi, int dado, char cod[2]) {
+int enfileirar_main(Fila *fi, int dado, char fila, char tipo) {
   if (fi == NULL) {
     return 0;
   }
@@ -113,7 +114,8 @@ int enfileirar_main(Fila *fi, int dado, char cod[2]) {
 
   // atribui valores ao elemento novo
   no->dado = dado;
-  strcpy(no->cod, cod);
+  no->fila = fila;
+  no->tipo = tipo;
   no->prox = NULL;
 
   // se a fila estiver vazia, insere no início da fila
@@ -130,7 +132,6 @@ int enfileirar_main(Fila *fi, int dado, char cod[2]) {
 
   return 1;
 }
-
 // função para remover elemento do início da fila
 int desenfileirar(Fila *fi) {
   if (fi == NULL) {
@@ -161,52 +162,70 @@ int desenfileirar(Fila *fi) {
   return ficha;
 }
 
-int desenfilerar_main(Fila *fi){
+void desenfileirar_main(Fila *fi) {
   if (fi == NULL) {
-    return 0;
+    printf("fi = null\n");
   }
-
-  // fila vazia, não remove nada
+  // Fila vazia, não remove nada
   if (fi->inicio == NULL) {
-    return 0;
+    printf("Fila main vazia\n");
   }
-  srand(time(NULL));
-  // remove elemento do início da fila
-  Elemento *no;
-  int c = 0;
-  no = fi->inicio;
 
-  int tipo = rand() % 2;
-  //1 - Caixa
-  //2 - Negocial
-  if(tipo == 1)
-  {
-    do{ 
-      if(strcmp(&(no->cod[0]), "X") == 0)
-      {
-        if(strcmp(&(no->cod[1]), "P") == 0)
-        {
-    
-        } 
-      }
   
-      fi->inicio = fi->inicio->prox;
-    }while(fi->inicio != NULL);
+
+  srand(time(NULL));
+
+  int tipo_fi = rand() % 2;
+  printf("Valor fi: %d",tipo_fi);
+  if (tipo_fi == 0 )
+  {
+    struct descritor *aux = fi;
+    while(aux->inicio != NULL)
+      
+      {
+        if(aux->inicio->fila == 'X')
+        {
+          printf("\nSenha: %c%c%d",aux->inicio->fila, aux->inicio->tipo, aux->inicio->dado);
+          break;
+        }   
+        aux->inicio = aux->inicio->prox;
+      }
+    }
+  else if (tipo_fi == 1)
+  {
+    struct descritor *aux = fi;
+    while(aux->inicio != NULL)
+    {
+      if(aux->inicio->fila == 'N')
+      {
+        printf("\nSenha: %c%c%d",aux->inicio->fila, aux->inicio->tipo, aux->inicio->dado);
+        break;
+      }
+      aux->inicio = aux->inicio->prox;
+    }
   }
+  
+  // Atualize a fila principal (fi) e libere a memória do elemento
+  // struct descritor *no = aux;
+  // fi->inicio = fi->inicio->prox;
+  // fi->quant--;
 
+  // Libere Elemento no
+  // free(no);
 
-  fi->inicio = fi->inicio->prox;
-  fi->quant--;
+  // Se a fila ficou vazia
+  // if (fi->inicio == NULL) {
+  //   fi->fim = NULL;
+  // }
+}
 
-  // libera Elemento no
-  free(no);
+void printa_main(Fila *fi) {
+  struct descritor *aux = fi;
 
-  // se a fila ficou vazia
-  if (fi->inicio == NULL) {
-    fi->fim = NULL;
+  while (aux->inicio != NULL) {
+    printf("\t%c%c%d", aux->inicio->fila, aux->inicio->tipo, aux->inicio->dado);
+    aux->inicio = aux->inicio->prox;
   }
-
-  return ficha;
 }
 
 // função para consultar o primeiro elemento
