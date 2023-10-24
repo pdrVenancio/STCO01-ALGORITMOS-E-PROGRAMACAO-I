@@ -15,7 +15,9 @@ int tamanho_fila(Fila *fi);
 
 // funções para enfileirar e desenfileirar elementos da fila
 int enfileirar(Fila *fi, int dado);
+int enfileirar_main(Fila *fi, int dado, char cod[2]);
 int desenfileirar(Fila *fi);
+int desenfilerar_main(Fila *fi);
 
 // função para consultar elemento no início da fila
 int consultar_inicio_fila(Fila *fi, int *dado);

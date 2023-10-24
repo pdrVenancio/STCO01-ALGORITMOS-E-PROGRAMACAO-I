@@ -3,11 +3,14 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <time.h>
 
 #include "filaEncadeada.h"
 
 // criando elemento
 struct elemento {
+  char cod[2];
   int dado;
   struct elemento *prox;
 };
@@ -95,6 +98,38 @@ int enfileirar(Fila *fi, int dado) {
 
   return 1;
 }
+int enfileirar_main(Fila *fi, int dado, char cod[2]) {
+  if (fi == NULL) {
+    return 0;
+  }
+
+  // cria um elemento novo
+  Elemento *no;
+  no = criar_elemento();
+
+  if (no == NULL) {
+    return 0;
+  }
+
+  // atribui valores ao elemento novo
+  no->dado = dado;
+  strcpy(no->cod, cod);
+  no->prox = NULL;
+
+  // se a fila estiver vazia, insere no início da fila
+  if (fi->inicio == NULL) {
+    fi->inicio = no;
+
+    // senão insere elemento no final da fila
+  } else {
+    (fi->fim)->prox = no;
+  }
+
+  fi->fim = no;
+  fi->quant++;
+
+  return 1;
+}
 
 // função para remover elemento do início da fila
 int desenfileirar(Fila *fi) {
@@ -110,6 +145,7 @@ int desenfileirar(Fila *fi) {
   // remove elemento do início da fila
   Elemento *no;
   no = fi->inicio;
+  int ficha = fi->inicio->dado;
 
   fi->inicio = fi->inicio->prox;
   fi->quant--;
@@ -122,7 +158,55 @@ int desenfileirar(Fila *fi) {
     fi->fim = NULL;
   }
 
-  return 1;
+  return ficha;
+}
+
+int desenfilerar_main(Fila *fi){
+  if (fi == NULL) {
+    return 0;
+  }
+
+  // fila vazia, não remove nada
+  if (fi->inicio == NULL) {
+    return 0;
+  }
+  srand(time(NULL));
+  // remove elemento do início da fila
+  Elemento *no;
+  int c = 0;
+  no = fi->inicio;
+
+  int tipo = rand() % 2;
+  //1 - Caixa
+  //2 - Negocial
+  if(tipo == 1)
+  {
+    do{ 
+      if(strcmp(&(no->cod[0]), "X") == 0)
+      {
+        if(strcmp(&(no->cod[1]), "P") == 0)
+        {
+    
+        } 
+      }
+  
+      fi->inicio = fi->inicio->prox;
+    }while(fi->inicio != NULL);
+  }
+
+
+  fi->inicio = fi->inicio->prox;
+  fi->quant--;
+
+  // libera Elemento no
+  free(no);
+
+  // se a fila ficou vazia
+  if (fi->inicio == NULL) {
+    fi->fim = NULL;
+  }
+
+  return ficha;
 }
 
 // função para consultar o primeiro elemento
