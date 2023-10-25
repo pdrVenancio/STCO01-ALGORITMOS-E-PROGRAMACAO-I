@@ -17,8 +17,12 @@ int tamanho_fila(Fila *fi);
 int enfileirar(Fila *fi, int dado);
 int enfileirar_main(Fila *fi, int dado, char fila, char tipo);
 int desenfileirar(Fila *fi);
+int verifica_pref(Fila* fi);
+int verifica_com(Fila *fi);
+int verifica_cai(Fila *fi);
+int verifica_neg(Fila *fi);
 
-void desenfileirar_main(Fila *fi);
+void desenfileirar_main(Fila *fi, char tipo);
 void printa_main(Fila *fi);
 
 // função para consultar elemento no início da fila

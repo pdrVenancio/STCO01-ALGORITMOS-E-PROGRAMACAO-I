@@ -6,9 +6,6 @@
 // bibliotecas do projeto
 #include "filaEncadeada.h"
 
-// protótipo da função que cria um dado
-int criar_dado(int *dado);
-
 // funcao principal
 int main(void) {
 
@@ -20,222 +17,177 @@ int main(void) {
   Fila *fi_negocial_pref = NULL;
   Fila *fi_main = NULL;
 
-  int opcao, ok, pos, op;
-  int dado;
-  int n;
+  int opcao, ok, ok2, pos, op;
+  int n, pre = 0, cont_n = 0, cont_caixa = 0, cont_negocial = 0, cont_max = 0;
+  char tipo;
 
+  //Numero limite de senhas no dia 
   printf("Digite o numero maximos de fichas do dia: ");
   scanf("%d", &n);
+
+  //cria as filas ao iniciar o programa
+  fi_main = criar_fila(n);
+  fi_caixa_conv = criar_fila(n);
+  fi_caixa_pref = criar_fila(n);
+  fi_negocial_conv = criar_fila(n);
+  fi_negocial_pref = criar_fila(n);
+
+  if (fi_main != NULL && fi_negocial_conv != NULL && fi_negocial_conv != NULL && fi_caixa_conv != NULL && fi_caixa_pref != NULL) {
+    printf("\n Fila criada com sucesso!");
+    //enfileirar elementos        
+  } else {
+    printf("\n Fila não criada!");
+  }
+  //preenche todas as filas com numeros de 0 ate N
+  for (int i = 0; i <= n; i++) {
+    ok = enfileirar(fi_caixa_conv, i);
+    ok = enfileirar(fi_caixa_pref, i);
+    ok = enfileirar(fi_negocial_conv, i);
+    ok = enfileirar(fi_negocial_pref, i);
+  }
 
   // menu de opções para execuções de operações sobre a fila
   do {
     printf("\n\nMenu de opções");
-    printf("\n1  - Liberar fila");
-    printf("\n2  - Adicionar elementos as filas criadas");
-    printf("\n3  - Retirar Ficha main");
-    printf("\n4  - Consulta listas");
-    printf("\n5  - Consultar inicio da fila Negocial");
-    printf("\n6  - Criar filas");
-    printf("\n7  - Retirar ficha Caixa");
-    printf("\n8  - Retirar ficha Negocial");
-    printf("\n9  - Ver fila main");
-    printf("\n0  - Sair");
+    printf("\n1  - Retirar Ficha main");
+    printf("\n2  - Verifica se fila esta vazia");
+    printf("\n3  - Retirar ficha Caixa");
+    printf("\n4  - Retirar ficha Negocial");
     printf("\nOpção: ");
     scanf("%d", &opcao);
 
     switch (opcao) {
+// RETIRAR FICHA DA MAIN
     case 1:
+      cont_max++;
+      
+      ok = verifica_pref(fi_main);
+      ok2 = verifica_com(fi_main);
 
-      // liberar fila
-      ok = liberar_fila(fi_caixa_conv);
-      fi_caixa_conv = NULL;
-
-      ok = liberar_fila(fi_caixa_pref);
-      fi_caixa_pref = NULL;
-
-      ok = liberar_fila(fi_negocial_conv);
-      fi_negocial_conv = NULL;
-
-      ok = liberar_fila(fi_negocial_pref);
-      fi_negocial_pref = NULL;
-
-      if (ok) {
-        printf("\n Fila liberada com sucesso!");
-      } else {
-        printf("\n Fila não liberada!");
+      if(ok && ok2)
+      {
+        if (pre < 2) {
+          tipo = 'P';
+          desenfileirar_main(fi_main, tipo);
+          pre++;
+        }else{
+          tipo = 'C';
+          desenfileirar_main(fi_main, tipo);
+          pre = 0;
+        }
+      }else if (!ok){
+        tipo = 'C';
+        desenfileirar_main(fi_main, tipo);
+        
+      }else if(!ok2){
+        tipo = 'P';
+        desenfileirar_main(fi_main, tipo);
       }
+      printf("\nFila principal: ");
+      printa_main(fi_main);
+
       break;
 
+// Verifica se lista esta vazia
     case 2:
 
-      // enfileirar elemento
-      for (int i = 0; i <= n; i++) {
-        ok = enfileirar(fi_caixa_conv, i);
-        ok = enfileirar(fi_caixa_pref, i);
-        ok = enfileirar(fi_negocial_conv, i);
-        ok = enfileirar(fi_negocial_pref, i);
-      }
-
-      if (ok == 1) {
-        printf("\n Inserção realizada com sucesso!");
-      } else {
-        printf("\n Falha na inserção!");
-      }
+      ok = tamanho_fila(fi_main);
+      if(ok == 0)
+        printf("\nFila vazia!");
+      else
+        printf("\nFila ainda possui %d senhas para atendimento!",ok);
 
       break;
 
-      //RETIRAR FICHA DA MAIN
+//Pegar senha para o caixa
     case 3:
-      
-      desenfileirar_main(fi_main);
+      if(cont_n < n){
+        cont_caixa++;
+        printf("\n1 - Preferencial\t2 - Convencional\n");
+
+        scanf(" %d", &op);
+        if (op == 1) {
+          int fichaXP = desenfileirar(fi_caixa_pref);
+          char fila = 'X';
+          char tipo = 'P';
+          ok = enfileirar_main(fi_main, fichaXP, fila, tipo);
+          cont_n++;
+
+          if (ok)
+            printf("\nFicha adicionada a fila principal!\nFila Rincipal: ");
+            printa_main(fi_main);
+        } else if (op == 2) {
+          int fichaXC = desenfileirar(fi_caixa_conv);
+          char fila = 'X';
+          char tipo = 'C';
+          ok = enfileirar_main(fi_main, fichaXC, fila, tipo);
+          cont_n++;
+
+          if (ok)
+            printf("\nFicha adicionada a fila principal!\nFila Rincipal: ");
+            printa_main(fi_main);
+        }
+
+        else
+          printf("Opcao invalida!");
+      }else
+        printf("\nNumero maximo de senhas geradas!\n\t");
       
       break;
-
-    //Primeiro elemento fila Caixa
+      
+//Pegar senha para o negocial
     case 4:
-      //TA BUGANDO O RETIRAR FICHA
+      if(cont_n < n){
+        cont_negocial++;
+        printf("\n1 - Preferencial\t2 - Convencional\n");
+
+        scanf(" %d", &op);
+        if (op == 1) {
+          int fichaNP = desenfileirar(fi_negocial_pref);
+          char fila = 'N';
+          char tipo = 'P';
+          ok = enfileirar_main(fi_main, fichaNP, fila, tipo);
+          cont_n++;
+
+          if (ok)
+          printf("\nFicha adicionada a fila principal!\nFila Rincipal: ");
+          printa_main(fi_main);
+        }
+
+        else if (op == 2) {
+          int fichaNC = desenfileirar(fi_negocial_conv);
+          char fila = 'N';
+          char tipo = 'C';
+          ok = enfileirar_main(fi_main, fichaNC, fila, tipo);
+          cont_n++;
+
+          if (ok)
+            printf("\nFicha adicionada a fila principal!\nFila Rincipal: ");
+            printa_main(fi_main);
+        }
+        else
+          printf("Opcao invalida!");
+      }else
+        printf("\nNumero maximo de senhas geradas! ");
       
-      printf("\nMain: ");
-      printa_main(fi_main);
-      printf("\nCaixa con: ");
-      printa_main(fi_caixa_conv);
-      printf("\nCaixa pre: ");
-      printa_main(fi_caixa_pref);
-      printf("\nNegocial con: ");
-      printa_main(fi_negocial_conv);
-      printf("\nNegocial pref: ");
-      printa_main(fi_negocial_pref);
-
-      break;
-      
-    //Primeiro elemento fila Negocial
-    case 5:
-      printf("\n1 - Preferencial\t2 - Convencional\n");
-
-      scanf(" %d", &op);
-      if (op == 1)
-        ok = consultar_inicio_fila(fi_negocial_pref, &dado);
-      else if (op == 2)
-        ok = consultar_inicio_fila(fi_negocial_conv, &dado);
-      else
-        printf("Opcao invalida!");
-
-
-      if (ok) {
-        printf("\n Busca realizada com sucesso!");
-        printf("\n Elemento no início da fila: ");
-        printf("%d", dado);
-      } else {
-        printf("\n Fila vazia!");
-      }
-      
-    //CRIAR FILAS
-    case 6:
-      fi_main = criar_fila(n);
-      fi_caixa_conv = criar_fila(n);
-      fi_caixa_pref = criar_fila(n);
-      fi_negocial_conv = criar_fila(n);
-      fi_negocial_pref = criar_fila(n);
-
-    
-      if (fi_main != NULL && fi_negocial_conv != NULL && fi_negocial_conv != NULL && fi_caixa_conv != NULL && fi_caixa_pref != NULL  ) {
-        printf("\n Fila criada com sucesso!");
-      } else {
-        printf("\n Fila não criada!");
-      }
-
-      break;
-
-    // RETIRADAS DE FICHAS
-      //caixa
-    case 7:
-      printf("\n1 - Preferencial\t2 - Convencional\n");
-
-      scanf(" %d", &op);
-      if (op == 1)
-      {
-        int fichaXP = desenfileirar(fi_caixa_pref);
-        printf("\n\t Seu numero e: XP%d", fichaXP);
-        char fila = 'X';
-        char tipo = 'P';
-        ok =  enfileirar_main(fi_main, fichaXP , fila, tipo); 
-        if(ok)
-          printf("\nFicha adicionada a fila principal!\n\n");
-      }
-      else if (op == 2)
-      {
-        int fichaXC = desenfileirar(fi_caixa_conv);
-        printf("\n\t Seu numero e: XC%d", fichaXC);
-        char fila = 'X';
-        char tipo = 'C';
-        ok = enfileirar_main(fi_main, fichaXC , fila, tipo);
-        if(ok)
-          printf("\nFicha adicionada a fila principal!\n\n");
-      }
-
-      else
-        printf("Opcao invalida!");
-
-      
-      break;
-      //negocial
-    case 8:
-      printf("\n1 - Preferencial\t2 - Convencional\n");
-
-      scanf(" %d", &op);
-      if (op == 1)
-      {
-        int fichaNP = desenfileirar(fi_negocial_pref);
-        printf("\n\t Seu numero e: NP%d", fichaNP);
-        char fila = 'N';
-        char tipo = 'P';
-        ok = enfileirar_main(fi_main, fichaNP , fila, tipo);
-        if(ok)
-          printf("\nFicha adicionada a fila principal!\n\n");
-      }
-
-      else if (op == 2)
-      {
-        int fichaNC = desenfileirar(fi_negocial_conv);
-        printf("\n\t Seu numero e: NC%d", fichaNC);
-        char fila = 'N';
-        char tipo = 'C';
-        ok = enfileirar_main(fi_main, fichaNC , fila, tipo);
-        if(ok)
-          printf("\nFicha adicionada a fila principal!\n\n");
-      }
-
-      else
-        printf("Opcao invalida!");
 
 
       break;
-    case 9:
-      printa_main(fi_main);
-      break;
-    case 0:
-
-      // libera memória e finaliza programa
-      liberar_fila(fi_caixa_conv);
-      liberar_fila(fi_caixa_pref);
-      liberar_fila(fi_negocial_conv);
-      liberar_fila(fi_negocial_pref);
-      printf("\nFinalizando...");
-      break;
-
     default:
       printf("\nOpção inválida!");
       break;
     }
 
-  } while (opcao != 0);
+  } while (cont_max < n);
 
+  printf("\n\n\tATENDIMENTOS FINALIZADOS");
+  printf("\n\tAtentendimestos no caixa: %d", cont_caixa);
+  printf("\n\tAtentendimestos no negocial: %d", cont_negocial);
+  liberar_fila(fi_caixa_conv);
+  liberar_fila(fi_caixa_pref);
+  liberar_fila(fi_negocial_conv);
+  liberar_fila(fi_negocial_pref);
+  printf("\n\nFinalizando...");
+  
   return 0;
 }
-
-// int criar_dado(int *dado) {
-//   printf("\nDigite um número inteiro: ");
-//   scanf("%d", dado);
-//
-//   return 1;
-// }

@@ -162,74 +162,163 @@ int desenfileirar(Fila *fi) {
   return ficha;
 }
 
-void desenfileirar_main(Fila *fi) {
+void desenfileirar_main(Fila *fi, char tipo) {
   if (fi == NULL) {
     printf("fi = null\n");
   }
+
   // Fila vazia, não remove nada
   if (fi->inicio == NULL) {
-    printf("Fila main vazia\n");
   }
+  Elemento *aux = fi->inicio;
+  int tipo_fi;
 
-  
-
-  srand(time(NULL));
-
-  int tipo_fi = rand() % 2;
-  printf("Valor fi: %d",tipo_fi);
-  if (tipo_fi == 0 )
-  {
-    struct descritor *aux = fi;
-    while(aux->inicio != NULL)
+  if (tipo == 'P') {
+    
+    //verifico se existe negocial e caixa
+    if ((verifica_neg(fi) && verifica_pref(fi)) && (verifica_cai(fi) && verifica_pref(fi))) {
+      srand(time(NULL));
+      tipo_fi = rand() % 2;
       
-      {
-        if(aux->inicio->fila == 'X')
-        {
-          printf("\nSenha: %c%c%d",aux->inicio->fila, aux->inicio->tipo, aux->inicio->dado);
+    //devo verificar se nao tem pessoas para serem atendidas no caixa mas existem para
+    //serem atendidas no negocial
+    } else if (!verifica_cai(fi) && (verifica_pref(fi) && verifica_neg(fi)))
+      tipo_fi = 1;
+
+    //devo verificar se nao tem pessoas para serem atendidas no negocial mas existem para
+    //serem atendidas no caixa
+    else if (!verifica_neg(fi) && (verifica_cai(fi) && verifica_neg(fi)))
+      tipo_fi = 0;
+    
+    if (tipo_fi == 0) {
+      while (aux != NULL) {
+        if (aux->fila == 'X' && aux->tipo == 'P') {
+          printf("\nSenha: %c%c%d", aux->fila, aux->tipo, aux->dado);
           break;
-        }   
-        aux->inicio = aux->inicio->prox;
+        }
+        aux = aux->prox;
+      }
+
+    }else if (tipo_fi == 1) {
+      while (aux != NULL) {
+        if (aux->fila == 'N' && aux->tipo == 'P') {
+          printf("\nSenha: %c%c%d", aux->fila, aux->tipo, aux->dado);
+          break;
+        }
+        aux = aux->prox;
       }
     }
-  else if (tipo_fi == 1)
-  {
-    struct descritor *aux = fi;
-    while(aux->inicio != NULL)
-    {
-      if(aux->inicio->fila == 'N')
-      {
-        printf("\nSenha: %c%c%d",aux->inicio->fila, aux->inicio->tipo, aux->inicio->dado);
-        break;
+  }else if (tipo == 'C'){
+    //verifico se existe negocial e caixa
+    if ((verifica_neg(fi) && verifica_com(fi)) && (verifica_cai(fi) && verifica_com(fi))) {
+      srand(time(NULL));
+      tipo_fi = rand() % 2;
+
+    //devo verificar se nao tem pessoas para serem atendidas no caixa mas existem para
+    //serem atendidas no negocial
+    } else if (!verifica_cai(fi) && (verifica_com(fi) && verifica_neg(fi)))
+      tipo_fi = 1;
+
+    //devo verificar se nao tem pessoas para serem atendidas no negocial mas existem para
+    //serem atendidas no caixa
+    else if (!verifica_neg(fi) && (verifica_com(fi) && verifica_cai(fi)))
+      tipo_fi = 0;
+    
+    if(tipo_fi == 0){
+      while (aux != NULL) {
+        if (aux->fila == 'X' && aux->tipo == 'C') {
+          printf("\nSenha: %c%c%d", aux->fila, aux->tipo, aux->dado);
+          break;
+        }
+        aux = aux->prox;
       }
-      aux->inicio = aux->inicio->prox;
-    }
+
+    } else if (tipo_fi == 1) {
+
+      while (aux != NULL) {
+        if (aux->fila == 'N' && aux->tipo == 'C') {
+          printf("\nSenha: %c%c%d", aux->fila, aux->tipo, aux->dado);
+          break;
+        }
+        aux = aux->prox;
+      }
+    } 
   }
-  
-  // Atualize a fila principal (fi) e libere a memória do elemento
-  // struct descritor *no = aux;
-  // fi->inicio = fi->inicio->prox;
-  // fi->quant--;
+  Elemento *anterior = fi->inicio;
+  if (aux != NULL) {
+    // Caso seja o primeiro
+    if (aux == fi->inicio) {
+      fi->inicio = aux->prox;
+    } else {
+      // Caso seja o ultimo.
 
-  // Libere Elemento no
-  // free(no);
+      while (anterior->prox != aux) {
+        anterior = anterior->prox;
+      }
+      anterior->prox = aux->prox;
+    }
 
-  // Se a fila ficou vazia
-  // if (fi->inicio == NULL) {
-  //   fi->fim = NULL;
-  // }
+    //caso seja o ultimo
+    if (aux == fi->fim) {
+      fi->fim = anterior;
+    }
+    
+    free(aux);
+    fi->quant--;
+  }
 }
 
-void printa_main(Fila *fi) {
-  struct descritor *aux = fi;
+void printa_main(Fila * fi){
+  Elemento *aux = fi->inicio;
 
-  while (aux->inicio != NULL) {
-    printf("\t%c%c%d", aux->inicio->fila, aux->inicio->tipo, aux->inicio->dado);
-    aux->inicio = aux->inicio->prox;
+  while (aux != NULL) {
+    printf("\t%c%c%d", aux->fila, aux->tipo, aux->dado);
+    aux = aux->prox;
   }
+}
+int verifica_pref(Fila * fi) {
+  Elemento *aux = fi->inicio;
+  while (aux != NULL) {
+    if (aux->tipo == 'P')
+      return 1;
+
+    aux = aux->prox;
+  }
+  return 0;
+}
+int verifica_com(Fila * fi) {
+  Elemento *aux = fi->inicio;
+  while (aux != NULL) {
+    if (aux->tipo == 'C')
+      return 1;
+
+    aux = aux->prox;
+  }
+  return 0;
+}
+int verifica_cai(Fila * fi) {
+  Elemento *aux = fi->inicio;
+  while (aux != NULL) {
+    if (aux->fila == 'X')
+      return 1;
+
+    aux = aux->prox;
+  }
+  return 0;
+}
+int verifica_neg(Fila * fi) {
+  Elemento *aux = fi->inicio;
+  while (aux != NULL) {
+    if (aux->fila == 'N')
+      return 1;
+
+    aux = aux->prox;
+  }
+  return 0;
 }
 
 // função para consultar o primeiro elemento
-int consultar_inicio_fila(Fila *fi, int *dado) {
+int consultar_inicio_fila(Fila * fi, int *dado) {
   // verifica se a fila foi criada corretamente e se não está vazia
   if (fi == NULL || fi->inicio == NULL) {
     return 0;
@@ -242,7 +331,7 @@ int consultar_inicio_fila(Fila *fi, int *dado) {
 }
 
 // função que devolve o tamanho da fila
-int tamanho_fila(Fila *fi) {
+int tamanho_fila(Fila * fi) {
   if (fi == NULL) {
     return -1;
   }
